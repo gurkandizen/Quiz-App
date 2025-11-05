@@ -1,9 +1,11 @@
 function UI() {
     this.quiz_box = document.querySelector("#quiz-box");
     this.body = document.querySelector("#quiz-box #body");
+    this.correctIcon = '<i class="bi bi-check-circle"></i>';
+    this.inCorrectIcon = '<i class="bi bi-x-circle"></i>';
 }
 
-UI.prototype.soruGoster = function(Question) {
+UI.prototype.soruGoster = function(soru) {
     this.body.innerHTML = "";
     
     const cardBody = document.createElement("div");
@@ -11,14 +13,15 @@ UI.prototype.soruGoster = function(Question) {
 
     const title = document.createElement("h5");
     title.classList.add("question-title");
-    title.textContent = Question.soruMetni;
+    title.textContent = soru.soruMetni;
 
     const optionList = document.createElement("div");
     optionList.classList.add("option-list");
 
-    for(let [key,value] of Object.entries(Question.cevapSecenekleri)) {
+    for(let [key,value] of Object.entries(soru.cevapSecenekleri)) {
         const option = document.createElement("div");
         option.classList.add("option");
+        option.addEventListener("click", optionSelected);
 
         const span = document.createElement("span");
         span.textContent = key + ") " + value;
@@ -31,4 +34,11 @@ UI.prototype.soruGoster = function(Question) {
     cardBody.appendChild(optionList);
 
     this.body.appendChild(cardBody);
+}
+
+UI.prototype.disableAllOption = function() {
+    const options = document.querySelectorAll(".option");
+    for(let option of options) {
+        option.classList.add("disabled");
+    }
 }
