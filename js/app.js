@@ -17,6 +17,7 @@ ui.btnNext.addEventListener("click", function() {
 
     } else {
         console.log("quiz bitti");
+        ui.skoruGoster(quiz.dogruCevapSayisi, quiz.sorular.length);
     }
 });
 
@@ -31,6 +32,7 @@ function optionSelected(e) {
     const soru = quiz.soruGetir();
 
     if(soru.cevabiKontrolEt(cevap)) {
+        quiz.dogruCevapSayisi += 1;
         selectedElement.classList.add("correct");
         selectedElement.insertAdjacentHTML("beforeend", ui.correctIcon);
     } else {
@@ -41,3 +43,15 @@ function optionSelected(e) {
     quiz.soruIndex += 1;
     ui.disableAllOption();
 }
+
+ui.btnQuit.addEventListener("click", function() {
+    window.location.reload();
+});
+
+ui.btnReplay.addEventListener("click", function() {
+    quiz.soruIndex = 0;
+    quiz.dogruCevapSayisi = 0;
+    // star button
+    ui.btnNext.click();
+    ui.skoruGoster(quiz.dogruCevapSayisi, quiz.sorular.length);
+});
