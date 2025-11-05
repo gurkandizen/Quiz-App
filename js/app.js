@@ -8,10 +8,11 @@ const soruListesi = [
 const quiz = new Quiz(soruListesi);
 const ui = new UI();
 
-document.getElementById("btnSoruGetir").addEventListener("click", function() {
+ui.btnNext.addEventListener("click", function() {
     if(quiz.sorular.length != quiz.soruIndex) {
         ui.soruGoster(quiz.soruGetir());
-        
+        ui.soruSayisiniGoster(quiz.soruIndex + 1, quiz.sorular.length);
+
         console.log(quiz);
 
     } else {
@@ -20,15 +21,21 @@ document.getElementById("btnSoruGetir").addEventListener("click", function() {
 });
 
 function optionSelected(e) {
+    let selectedElement = e.target;
+
+    if(selectedElement.nodeName == "SPAN") {
+        selectedElement = selectedElement.parentElement;
+    }
+
     const cevap = e.target.textContent[0];
     const soru = quiz.soruGetir();
 
     if(soru.cevabiKontrolEt(cevap)) {
-        e.target.classList.add("correct");
-        e.target.insertAdjacentHTML("beforeend", ui.correctIcon);
+        selectedElement.classList.add("correct");
+        selectedElement.insertAdjacentHTML("beforeend", ui.correctIcon);
     } else {
-        e.target.classList.add("incorrect");
-        e.target.insertAdjacentHTML("beforeend", ui.inCorrectIcon);
+        selectedElement.classList.add("incorrect");
+        selectedElement.insertAdjacentHTML("beforeend", ui.inCorrectIcon);
     }
 
     quiz.soruIndex += 1;
